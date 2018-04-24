@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  tasks:
+  - name: mvn container
+    docker_container:
+      name: mvn
+      image: mvn
+      state: started
+
+  - name: jenkins data container
+    docker_container:
+      name: jenkinsdata
+      image: jenkins
+      pull: True
+      state: started
+  - name: jenkins master container
+    docker_container:
+      name: jenkinsmaster
+      image: jenkins-master
+      state: started
+      ports:
+        "9001:8080"
+      volumes:
+        - jenkinsdata:/var/jenkins_home
